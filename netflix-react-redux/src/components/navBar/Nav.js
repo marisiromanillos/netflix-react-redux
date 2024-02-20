@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Nav.css";
+import logo from "../../assets/logo.svg";
+import avatar from "../../assets/avatar.jpeg";
 
 const Nav = () => {
   const [show, setShow] = useState();
@@ -20,12 +22,8 @@ const Nav = () => {
     <>
       <div className={`nav ${show && "nav_black"}`}>
         <div className="nav_content">
-          <img className="nav_logo" src="logo.svg" alt="netflix logo" />
-          <img
-            className="nav_avatar"
-            src="avatar.jpeg"
-            alt="avatar place holder"
-          />
+          <img className="nav_logo" src={logo} alt="netflix logo" />
+          <img className="nav_avatar" src={avatar} alt="avatar place holder" />
         </div>
       </div>
     </>

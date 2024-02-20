@@ -131,3 +131,6 @@ dist
 
 #firebase Configuration
 firebase.js
+
+#secrets
+secrets.js
