@@ -2,52 +2,38 @@ import React, { useEffect, useState } from "react";
 import "./Banner.css";
 import axios from "axios";
 import requests from "../../api/apiRequests";
+import { useSelector } from "react-redux";
+import { selectMovie } from "../../features/slices/movieSlice";
+import { abbreviateString } from "../../utils/string";
 
 const Banner = () => {
-  const [movie, setMovie] = useState([]);
+  const movie = useSelector(selectMovie);
 
-  const getApiData = async () => {
-    try {
-      const results = await axios.get(requests.fetchNetflixOriginals);
-      results.data.results.forEach((item, index) => {
-        item.uniqueId = Math.random() + index;
-      });
-      setMovie(results.data.results);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  if (movie.length === 0) return <p>movies loading</p>; //defensive check
 
-  useEffect(() => {
-    getApiData();
-  }, []);
-
-  console.log(movie);
-
-  //abbreviate String
-  const abbreviateString = (string, n) => {
-    return string?.length > n ? string.substr(0, n - 1) + "..." : string;
-  };
+  const { name, title, vote_average, overview, backdrop_path } =
+    movie[Math.floor(Math.random() * movie.length)];
 
   return (
     <>
       <header
         className="banner"
         style={{
-          backgroundImage: `url("https://image.tmdb.org/t/p/original/${movie?.[0]?.backdrop_path}")`,
+          backgroundImage: `url("https://image.tmdb.org/t/p/original/${backdrop_path}")`,
           backgroundSize: "cover",
           backgroundPosition: "center center",
         }}
       >
         <div className="banner_content">
-          <h1 className="banner-title">{movie?.[0]?.name ?? ""}</h1>
+          <h1 className="banner-title">{name || title}</h1>
           <div className="banner_btns">
             <button className="banner_btn">Play</button>
             <button className="banner_btn">My List</button>
           </div>
           <h1 className="banner_description">
-            {abbreviateString(movie?.[0]?.overview || "", 150)}
+            {abbreviateString(overview, 150)}
           </h1>
+          <p className="vote_audience">Audience Score: {vote_average}</p>
         </div>
         <div className="banner_fadeBottom" />
       </header>
